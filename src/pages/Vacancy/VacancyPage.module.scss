@@ -1,0 +1,166 @@
+@import "./../../styles/colors.scss";
+@import "./../../styles/fonts.scss";
+
+.section {
+  position: relative;
+  max-width: 773px;
+  width: 100%;
+  margin: 40px auto 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.shortDescription {
+  position: relative;
+  width: 100%;
+  padding: 23px;
+  padding-right: 50px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  border: 1px solid $grey-200;
+  border-radius: 12px;
+  background-color: $white;
+}
+
+.header {
+  margin: 0;
+  max-width: max-content;
+  @include TInter(700);
+  font-size: 28px;
+  line-height: 34px;
+  color: $black;
+  overflow: hidden;
+}
+
+.subtitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.salary {
+  @include TInter(700);
+  font-size: 20px;
+  line-height: 20px;
+  color: $black;
+}
+
+.separator {
+  @include TPoppins(400);
+  font-size: 20px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: $grey-600;
+}
+
+.time {
+  @include TInter(400);
+  font-size: 20px;
+  line-height: 20px;
+  color: $black;
+}
+
+.location {
+  padding-left: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.locationText {
+  @include TInter(400);
+  font-size: 16px;
+  line-height: 22px;
+  color: $black;
+}
+
+.favorite {
+  cursor: pointer;
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  width: 22px;
+  height: 22px;
+
+}
+
+.favorite>svg>path {
+  stroke: $grey-500;
+}
+
+.favorite:hover>svg>path {
+  stroke: $blue-500;
+}
+
+.favorite:active>svg {
+  fill: $blue-500;
+}
+
+.favorite:active>svg>path {
+  stroke: $blue-500;
+}
+
+.favorite.active>svg>path {
+  stroke: $blue-500;
+}
+
+.favorite.active>svg {
+  fill: $blue-500;
+}
+
+.descriptionContainer {
+  width: 773px;
+  margin-top: 20px;
+  margin-bottom: 51px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 23px;
+  gap: 20px;
+  background: $white;
+  border: 1px solid $grey-200;
+  border-radius: 12px;
+}
+
+.richText {
+  font-family: 'Inter';
+  font-style: normal;
+  color: $black;
+
+  // // selecet previos <ul> element
+  // p:has(+ ul),
+  // b:has(+ ul),
+  // b:has(+br+ ul) {
+  //   display: block;
+  //   margin-top: 20px;
+  //   margin-bottom: 16px;
+  //   @include TInter(700);
+  //   font-size: 20px;
+  //   line-height: 20px;
+  // }
+
+  // //if after <b> element <br>
+  // b:has(+br+ ul) {
+  //   margin-bottom: 0px;
+  // }
+
+  // // selecet <ul> element
+  // p:has(+ ul)~ul,
+  // b:has(+ ul)~ul,
+  // b+br:has(+ ul)~ul {
+  //   padding-left: 30px;
+  //   margin: 0;
+  // }
+}

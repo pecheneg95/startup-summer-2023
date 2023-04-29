@@ -1,0 +1,75 @@
+@import "./../../styles/colors.scss";
+@import "./../../styles/fonts.scss";
+
+.filter {
+  width: 315px;
+  height: 360px;
+  padding: 19px;
+
+  background: $white;
+  border: 1px solid $grey-200;
+  border-radius: 12px;
+}
+
+.titleContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+
+  @include TInter(700);
+  font-size: 20px;
+  line-height: 20px;
+
+  color: $black;
+}
+
+.reset {
+  cursor: pointer;
+  width: 115px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  border: none;
+  background-color: $white;
+
+  @include TInter(500);
+  font-size: 14px;
+  line-height: 20px;
+
+  color: $grey-500;
+
+  transition: .2s linear;
+}
+
+.reset>svg>line {
+  stroke: $grey-500;
+}
+
+.reset:hover {
+  color: $blue-400;
+}
+
+.reset:hover>svg>line {
+  stroke: $blue-400;
+}
+
+.reset:active {
+  color: $blue-500;
+  position: relative;
+  top: 1px;
+  transition: .2s linear;
+}
+
+.reset:active>svg>line {
+  stroke: $blue-500;
+}

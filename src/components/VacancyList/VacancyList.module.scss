@@ -1,0 +1,13 @@
+@import "./../../styles/colors.scss";
+@import "./../../styles/fonts.scss";
+
+.list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  width: 100%;
+  max-width: 773px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

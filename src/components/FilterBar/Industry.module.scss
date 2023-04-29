@@ -1,0 +1,16 @@
+@import "./../../styles/colors.scss";
+@import "./../../styles/fonts.scss";
+
+.container {
+  margin-top: 32px;
+}
+
+.header {
+  margin: 0;
+
+  @include TInter(700);
+  font-size: 16px;
+  line-height: 19px;
+  color: $black;
+
+}

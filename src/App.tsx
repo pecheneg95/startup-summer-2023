@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Routes, Route } from 'react-router-dom'
+
+import Layout from './components/Layout/Layout';
+
+import MainPage from './pages/Main/MainPage';
+import FavoritePage from './pages/Favorite/FavoritePage';
+import VacancyPage from './pages/Vacancy/VacancyPage';
+import NotFoundPage from './pages/NotFound/NotFoundPage';
+
 import './App.scss';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<MainPage />}></Route>
+          <Route path='/favorite' element={<FavoritePage />}></Route>
+          <Route path='/vacancies/:id' element={<VacancyPage />}></Route>
+          <Route path='/*' element={<NotFoundPage />}></Route>
+        </Route>
+      </Routes>
+    </>
   );
 }
 
-export default App;
+export default React.memo(App);

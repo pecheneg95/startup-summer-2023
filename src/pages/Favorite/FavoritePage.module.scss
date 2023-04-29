@@ -1,0 +1,98 @@
+@import "./../../styles/colors.scss";
+@import "./../../styles/fonts.scss";
+
+.section {
+  position: relative;
+  max-width: 773px;
+  width: 100%;
+  margin: 40px auto 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .paginateContainer {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    padding-top: 32px;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn {
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+
+    background: $white;
+    border: 1px solid $grey-300;
+    border-radius: 4px;
+
+
+
+    .btnLink {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @include TRoboto(400);
+      font-size: 16px;
+      line-height: 140%;
+      color: $black;
+    }
+  }
+
+  .activeBtn {
+
+    background: $blue-500;
+    border: 1px solid $blue-500;
+    border-radius: 4px;
+
+
+    .btnLink {
+      color: $white
+    }
+  }
+
+  .previos,
+  .next {
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+
+    background: $white;
+    border: 1px solid $grey-300;
+    border-radius: 4px;
+
+    a {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .previos>a>svg>path {
+    fill: $grey-600;
+  }
+
+  .next>a>svg>path {
+    fill: $grey-600;
+  }
+
+  .inactive>a>svg>path {
+    fill: $grey-300;
+    border: 1px solid $grey-200;
+  }
+}
+
+.loaderContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
