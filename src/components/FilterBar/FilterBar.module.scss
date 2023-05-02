@@ -1,11 +1,10 @@
-@import "./../../styles/colors.scss";
-@import "./../../styles/fonts.scss";
+@import './../../styles/colors.scss';
+@import './../../styles/fonts.scss';
 
 .filter {
   width: 315px;
   height: 360px;
   padding: 19px;
-
   background: $white;
   border: 1px solid $grey-200;
   border-radius: 12px;
@@ -20,7 +19,6 @@
 
 .title {
   margin: 0;
-
   @include TInter(700);
   font-size: 20px;
   line-height: 20px;
@@ -48,10 +46,10 @@
 
   color: $grey-500;
 
-  transition: .2s linear;
+  transition: 0.2s linear;
 }
 
-.reset>svg>line {
+.reset > svg > line {
   stroke: $grey-500;
 }
 
@@ -59,7 +57,7 @@
   color: $blue-400;
 }
 
-.reset:hover>svg>line {
+.reset:hover > svg > line {
   stroke: $blue-400;
 }
 
@@ -67,9 +65,12 @@
   color: $blue-500;
   position: relative;
   top: 1px;
-  transition: .2s linear;
+  transition: 0.2s linear;
 }
 
-.reset:active>svg>line {
+.reset:active > svg > line {
   stroke: $blue-500;
+}
+
+@media (max-width: 900px) {
 }

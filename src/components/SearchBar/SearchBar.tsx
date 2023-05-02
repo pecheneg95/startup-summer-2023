@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useCallback } from 'react';
 
-import { UpdatedFilters } from "../../types/types";
+import styles from './SearchBar.module.scss';
 
-import styles from "./SearchBar.module.scss"
+const SearchBar = ({
+  onChange,
+  onSearch,
+}: {
+  onChange: (text: string) => void;
+  onSearch: () => void;
+}) => {
+  const onInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const keyword =
+        event.target.value === undefined ? '' : event.target.value;
 
-const SearchBar = ({ keyword, updateFilters, doRequest }: { keyword: string, updateFilters: (updatedFilters: UpdatedFilters) => void, doRequest: () => void }) => {
+      onChange(keyword);
+    },
+    [onChange]
+  );
 
-  const handleKeyPress = (event: { key: string; }) => {
-    if (event.key === 'Enter') {
-      updateFilters({ page: 0 })
-      doRequest()
-    }
-  }
+  const onKeyDown = useCallback(
+    (event: { key: string }) => {
+      if (event.key === 'Enter') {
+        onSearch();
+      }
+    },
+    [onSearch]
+  );
 
   return (
     <div className={styles.search}>
@@ -22,19 +37,17 @@ const SearchBar = ({ keyword, updateFilters, doRequest }: { keyword: string, upd
           type="search"
           autoComplete="off"
           placeholder="Введите название вакансии"
-          value={keyword}
-          onKeyDown={handleKeyPress}
-          onChange={(event) => updateFilters({ keyword: event.target.value === undefined ? "" : event.target.value })}>
-        </input>
+          onKeyDown={onKeyDown}
+          onChange={onInputChange}></input>
       </div>
-      <button data-elem="search-button" className={styles.btn} onClick={() => {
-        updateFilters({ page: 0 })
-        doRequest()
-      }}>
+      <button
+        data-elem="search-button"
+        className={styles.btn}
+        onClick={onSearch}>
         Поиск
       </button>
-    </div >
-  )
-}
+    </div>
+  );
+};
 
 export default React.memo(SearchBar);

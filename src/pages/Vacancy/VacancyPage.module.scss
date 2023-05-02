@@ -1,5 +1,5 @@
-@import "./../../styles/colors.scss";
-@import "./../../styles/fonts.scss";
+@import './../../styles/colors.scss';
+@import './../../styles/fonts.scss';
 
 .section {
   position: relative;
@@ -93,30 +93,29 @@
   top: 24px;
   width: 22px;
   height: 22px;
-
 }
 
-.favorite>svg>path {
+.favorite > svg > path {
   stroke: $grey-500;
 }
 
-.favorite:hover>svg>path {
+.favorite:hover > svg > path {
   stroke: $blue-500;
 }
 
-.favorite:active>svg {
+.favorite:active > svg {
   fill: $blue-500;
 }
 
-.favorite:active>svg>path {
+.favorite:active > svg > path {
   stroke: $blue-500;
 }
 
-.favorite.active>svg>path {
+.favorite.active > svg > path {
   stroke: $blue-500;
 }
 
-.favorite.active>svg {
+.favorite.active > svg {
   fill: $blue-500;
 }
 
@@ -135,8 +134,8 @@
 }
 
 .richText {
-  font-family: 'Inter';
-  font-style: normal;
+  // font-family: 'Inter';
+  // font-style: normal;
   color: $black;
 
   // // selecet previos <ul> element

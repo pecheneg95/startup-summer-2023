@@ -1,114 +1,186 @@
-import React from "react"
-import { useCallback, useEffect, useRef, useState } from "react"
-import ReactPaginate from "react-paginate"
-import { Loader } from "@mantine/core"
+import React, { useEffect } from 'react';
+import { useCallback, useState } from 'react';
+import ReactPaginate from 'react-paginate';
+import { Loader } from '@mantine/core';
 
-import FilterBar from "./../../components/FilterBar/FilterBar"
-import SearchBar from "./../../components/SearchBar/SearchBar"
-import VacancyList from "./../../components/VacancyList/VacancyList"
-import ChevronRightIcon from "../../components/Icons/Chevron/ChevronRightIcon"
-import ChevronLeftIcon from "../../components/Icons/Chevron/ChevronLeftIcon"
-import NotFoundPage from "../NotFound/NotFoundPage"
+import FilterBar from './../../components/FilterBar/FilterBar';
+import SearchBar from './../../components/SearchBar/SearchBar';
+import VacancyList from './../../components/VacancyList/VacancyList';
+import Empty from '../../components/Empty/Empty';
+import ChevronRightIcon from '../../components/Icons/Chevron/ChevronRightIcon';
+import ChevronLeftIcon from '../../components/Icons/Chevron/ChevronLeftIcon';
 
-import { getIndustries, getVacancies } from "../../services/superjob.api"
+import { useFirstLoading } from './MainPage.hooks';
 
-import { Filters, Industry, UpdatedFilters, Vacancy } from "./../../types/types"
+import superjobService from '../../services/superjob.service';
+import calcPages from '../../helpers/calcPages';
 
-import styles from "./MainPage.module.scss"
+import {
+  Filters,
+  Industry,
+  UpdatedFilters,
+  Vacancy,
+} from './../../types/types';
 
-const REPOS_ON_PAGE = 4;
-const API_MAX_PAGES = 500;
+import styles from './MainPage.module.scss';
+
+const DEFAULT_FILTERS: Filters = {
+  keyword: '',
+  catalogues: null,
+  payment_from: 0,
+  payment_to: 0,
+  page: 0,
+};
 
 const MainPage = () => {
-  const [isVacanciesLoading, setIsVacanciesLoading] = useState(true)
-  const [filters, setFilters] = useState<Filters>({
-    keyword: "",
-    catalogues: null,
-    payment_from: 0,
-    payment_to: 0,
-    page: 0,
-  })
+  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
 
-  const updateFilters = useCallback((updatedFilters: UpdatedFilters) => {
-    setFilters({ ...filters, ...updatedFilters })
-  }, [filters])
+  const updateFilters = useCallback(
+    (updatedFilters: UpdatedFilters) => {
+      setFilters({ ...filters, ...updatedFilters });
+    },
+    [filters]
+  );
 
-  const [industries, setIndustries] = useState<[Industry]>([{ title: "null", key: 0 }]);
+  const [vacancies, setVacancies] = useState<Vacancy[] | null>(null);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const fetchVacancies = useCallback(
+    async (updatedFilters: UpdatedFilters) => {
+      const filter = { ...filters, ...updatedFilters };
+      setFilters(filter);
+
+      const responseVacancies = await superjobService.getVacancies(filter);
+
+      if (
+        responseVacancies &&
+        responseVacancies.objects &&
+        responseVacancies.total
+      ) {
+        setVacancies(responseVacancies.objects);
+        setTotalPages(calcPages(responseVacancies.total));
+        return;
+      }
+
+      setVacancies(null);
+      setTotalPages(0);
+    },
+    [filters]
+  );
+
+  const [isVacanciesLoading, setIsVacanciesLoading] = useState(true);
+
+  const getVacancies = useCallback(
+    async (updatedFilters: UpdatedFilters) => {
+      setIsVacanciesLoading(true);
+      await fetchVacancies(updatedFilters);
+      setIsVacanciesLoading(false);
+    },
+    [fetchVacancies]
+  );
+
+  const [isIndustriesLoading, setIsIndustriesLoading] = useState(true);
+
+  const [industries, setIndustries] = useState<Industry[] | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     const fetchIndustries = async () => {
-      setIndustries(await getIndustries() as [Industry])
-    }
+      setIsIndustriesLoading(true);
+      setIndustries(await superjobService.getIndustries());
+      setIsIndustriesLoading(false);
+    };
 
     fetchIndustries();
-  }, [])
+  }, []);
 
-  const [vacancies, setVacancies] = useState<Vacancy[] | null>(null)
-  const [totalPages, setTotalPages] = useState(0)
+  useFirstLoading({ filters, getVacancies });
 
-  const doRequest = useCallback(async () => {
-    const fetchVacancies = async () => {
-      setIsVacanciesLoading(true)
-      const responseVacancies = await getVacancies(filters)
-      setIsVacanciesLoading(false)
+  const applyFilters = useCallback(() => {
+    updateFilters({ page: 0 });
+    getVacancies({ ...filters, page: 0 });
+  }, [filters, getVacancies, updateFilters]);
 
-      setVacancies(responseVacancies.objects)
-      setTotalPages(Math.ceil(responseVacancies.total / REPOS_ON_PAGE) > API_MAX_PAGES ? API_MAX_PAGES : Math.ceil(responseVacancies.total / REPOS_ON_PAGE))
-    }
+  const [isChangePage, setIsChangePage] = useState(false);
 
-    fetchVacancies();
-  }, [filters])
+  const onPageChange = useCallback(
+    async (p: { selected: number }) => {
+      setIsChangePage(true);
+      await fetchVacancies({ page: p.selected });
+      setIsChangePage(false);
+    },
+    [fetchVacancies]
+  );
 
-  const isInitialized = useRef(false)
-
-  useEffect(() => {
-    if (!isInitialized.current) {
-      isInitialized.current = true
-      doRequest()
-    }
-  }, [doRequest])
+  const onChangeSearch = (text: string) => {
+    updateFilters({ keyword: text });
+  };
 
   return (
     <div className={styles.mainPage}>
-      <FilterBar filters={{ catalogues: filters.catalogues, payment_from: filters.payment_from, payment_to: filters.payment_to }} updateFilters={updateFilters} doRequest={doRequest} industries={industries} />
-      <section className={styles.section}>
-        <SearchBar keyword={filters.keyword} updateFilters={updateFilters} doRequest={doRequest} />
-        {isVacanciesLoading ?
-          <div className={styles.loaderContainer}> <Loader size="xl" /></div>
-          :
-          <div className={styles.resultContainer}>
-            {vacancies === null ?
-              <NotFoundPage />
-              :
-              <div className={styles.listContainer}><VacancyList vacancies={vacancies} /></div>
-            }
-            {totalPages > 1 &&
-              <ReactPaginate
-                pageCount={totalPages}
-                pageRangeDisplayed={3}
-                marginPagesDisplayed={0}
-                forcePage={filters.page}
-                breakLabel={null}
-                nextLabel={<ChevronRightIcon color="none" />}
-                previousLabel={<ChevronLeftIcon color="none" />}
-                containerClassName={styles.paginateContainer}
-                pageClassName={styles.btn}
-                pageLinkClassName={styles.btnLink}
-                activeClassName={styles.activeBtn}
-                previousClassName={styles.previos}
-                nextClassName={styles.next}
-                disabledClassName={styles.inactive}
-                onPageChange={(p) => {
-                  updateFilters({ page: p.selected })
-                  doRequest()
-                }}
-              />
-            }
-          </div>
-        }
-      </section>
+      {isIndustriesLoading ? (
+        <div className={styles.loaderContainer}>
+          <Loader size="xl" />
+        </div>
+      ) : (
+        <>
+          {industries && (
+            <FilterBar
+              onUpdateFilters={updateFilters}
+              onApplyFilters={applyFilters}
+              industries={industries}
+            />
+          )}
+
+          <section className={styles.section}>
+            <SearchBar
+              onChange={onChangeSearch}
+              onSearch={applyFilters}
+            />
+            {isVacanciesLoading ? (
+              <div className={styles.loaderContainer}>
+                <Loader size="xl" />
+              </div>
+            ) : (
+              <div className={styles.resultContainer}>
+                {isChangePage ? (
+                  <div className={styles.loaderContainer}>
+                    <Loader size="xl" />
+                  </div>
+                ) : vacancies === null ? (
+                  <Empty />
+                ) : (
+                  <div className={styles.listContainer}>
+                    <VacancyList vacancies={vacancies} />
+                  </div>
+                )}
+                {totalPages > 1 && (
+                  <ReactPaginate
+                    pageCount={totalPages}
+                    pageRangeDisplayed={3}
+                    marginPagesDisplayed={0}
+                    forcePage={filters.page}
+                    breakLabel={null}
+                    nextLabel={<ChevronRightIcon color="none" />}
+                    previousLabel={<ChevronLeftIcon color="none" />}
+                    containerClassName={styles.paginateContainer}
+                    pageClassName={styles.btn}
+                    pageLinkClassName={styles.btnLink}
+                    activeClassName={styles.activeBtn}
+                    previousClassName={styles.previos}
+                    nextClassName={styles.next}
+                    disabledClassName={styles.inactive}
+                    onPageChange={onPageChange}
+                  />
+                )}
+              </div>
+            )}
+          </section>
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default React.memo(MainPage);
