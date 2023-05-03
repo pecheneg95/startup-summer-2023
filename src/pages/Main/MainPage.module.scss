@@ -105,13 +105,6 @@
   }
 }
 
-.loaderContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-}
-
 @media (max-width: 900px) {
   .mainPage {
     width: 100%;
@@ -126,12 +119,9 @@
 }
 
 @media (max-width: 600px) {
-  .loaderContainer {
-    height: 640px;
-  }
-
   .mainPage {
     .section {
+      min-height: 640px;
       .paginateContainer {
         padding-bottom: 16px;
       }

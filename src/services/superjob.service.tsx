@@ -11,6 +11,7 @@ const X_SECRET_KEY = process.env.REACT_APP_X_SECRET_KEY as string;
 const BASE_URL = 'startup-summer-2023-proxy.onrender.com';
 
 let authData: AuthData | null = null;
+let industries: Industry[] | null = null;
 
 const setToken = async () => {
   const result: AxiosResponse<AuthData> = await axios({
@@ -61,22 +62,26 @@ const makeRequest = async ({
 };
 
 const getIndustries = async () => {
-  if (!localStorage.getItem('industries')) {
-    const result: { data: Industry[] } | undefined = await axios({
-      method: 'get',
-      baseURL: `https://${BASE_URL}/2.0/catalogues/`,
-      headers: {
-        'X-Secret-Key': X_SECRET_KEY,
-        'X-Api-App-Id': CLIENT_SECRET,
-      },
-    });
-
-    if (result && result.data) {
-      return result.data;
-    }
+  if (!industries) {
+    await setIndustries();
   }
 
-  return JSON.parse(localStorage.getItem('industries') as string);
+  return industries;
+};
+
+const setIndustries = async () => {
+  const result: { data: Industry[] } | undefined = await axios({
+    method: 'get',
+    baseURL: `https://${BASE_URL}/2.0/catalogues/`,
+    headers: {
+      'X-Secret-Key': X_SECRET_KEY,
+      'X-Api-App-Id': CLIENT_SECRET,
+    },
+  });
+
+  if (result && result.data) {
+    industries = result.data;
+  }
 };
 
 const getVacancies = async (searchParams: UpdatedFilters) => {
@@ -114,8 +119,10 @@ const getVacancy = async (id: number) => {
   });
 
   if (result && result.data) {
-    return result.data;
+    return result.data as Vacancy;
   }
+
+  return null;
 };
 
 const getFavorites = async ({
@@ -148,6 +155,7 @@ const getFavorites = async ({
 const superjobService = {
   setToken,
   getIndustries,
+  setIndustries,
   getVacancies,
   getVacancy,
   getFavorites,

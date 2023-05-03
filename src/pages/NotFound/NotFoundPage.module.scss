@@ -15,7 +15,7 @@
   }
 
   .header {
-    margin-top: 32px;
+    margin: 32px 0;
     @include TInter(700);
     font-size: 24px;
     line-height: 29px;
@@ -58,5 +58,17 @@
     color: $blue-600;
     border: none;
     background: $blue-100;
+  }
+}
+
+@media (max-width: 600px) {
+  .section {
+    margin: 0;
+    justify-content: center;
+    .header {
+      margin-top: 20px;
+      font-size: 20px;
+      line-height: 24px;
+    }
   }
 }

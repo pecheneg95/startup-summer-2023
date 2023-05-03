@@ -10,13 +10,6 @@
   flex-direction: column;
 }
 
-.loaderContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-}
-
 .shortDescription {
   position: relative;
   width: 100%;
@@ -25,7 +18,8 @@
 
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 16px;
 
   border: 1px solid $grey-200;
   border-radius: 12px;
@@ -120,7 +114,8 @@
 }
 
 .descriptionContainer {
-  width: 773px;
+  max-width: 773px;
+  width: 100%;
   margin-top: 20px;
   margin-bottom: 51px;
   display: flex;
@@ -134,32 +129,66 @@
 }
 
 .richText {
-  // font-family: 'Inter';
-  // font-style: normal;
+  font-family: 'Inter';
+  font-style: normal;
   color: $black;
+}
 
-  // // selecet previos <ul> element
-  // p:has(+ ul),
-  // b:has(+ ul),
-  // b:has(+br+ ul) {
-  //   display: block;
-  //   margin-top: 20px;
-  //   margin-bottom: 16px;
-  //   @include TInter(700);
-  //   font-size: 20px;
-  //   line-height: 20px;
-  // }
+@media (max-width: 600px) {
+  .section {
+    margin-top: 20px;
+  }
+  .shortDescription {
+    height: auto;
+    padding: 10px;
+    padding-right: 34px;
+    gap: 8px;
+  }
 
-  // //if after <b> element <br>
-  // b:has(+br+ ul) {
-  //   margin-bottom: 0px;
-  // }
+  .header {
+    height: auto;
+    // max-height: 36px;
+    font-size: 16px;
+    line-height: 18px;
+  }
 
-  // // selecet <ul> element
-  // p:has(+ ul)~ul,
-  // b:has(+ ul)~ul,
-  // b+br:has(+ ul)~ul {
-  //   padding-left: 30px;
-  //   margin: 0;
-  // }
+  .subtitle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .salary {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .separator {
+    display: none;
+  }
+
+  .time {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .locationText {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .favorite {
+    right: 10px;
+    top: 10px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .descriptionContainer {
+    margin-top: 20px;
+    margin-bottom: 51px;
+    padding: 10px;
+    gap: 20px;
+  }
 }

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useCallback, useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import { Loader } from '@mantine/core';
 
 import FilterBar from './../../components/FilterBar/FilterBar';
 import SearchBar from './../../components/SearchBar/SearchBar';
@@ -9,6 +8,7 @@ import VacancyList from './../../components/VacancyList/VacancyList';
 import Empty from '../../components/Empty/Empty';
 import ChevronRightIcon from '../../components/Icons/Chevron/ChevronRightIcon';
 import ChevronLeftIcon from '../../components/Icons/Chevron/ChevronLeftIcon';
+import Loader from '../../components/Loader/Loader';
 
 import { useFirstLoading } from './MainPage.hooks';
 
@@ -79,11 +79,11 @@ const MainPage = () => {
     [fetchVacancies]
   );
 
+  useFirstLoading({ filters, getVacancies });
+
   const [isIndustriesLoading, setIsIndustriesLoading] = useState(true);
 
-  const [industries, setIndustries] = useState<Industry[] | undefined>(
-    undefined
-  );
+  const [industries, setIndustries] = useState<Industry[] | null>(null);
 
   useEffect(() => {
     const fetchIndustries = async () => {
@@ -94,8 +94,6 @@ const MainPage = () => {
 
     fetchIndustries();
   }, []);
-
-  useFirstLoading({ filters, getVacancies });
 
   const applyFilters = useCallback(() => {
     updateFilters({ page: 0 });
@@ -120,9 +118,7 @@ const MainPage = () => {
   return (
     <div className={styles.mainPage}>
       {isIndustriesLoading ? (
-        <div className={styles.loaderContainer}>
-          <Loader size="xl" />
-        </div>
+        <Loader />
       ) : (
         <>
           {industries && (
@@ -139,15 +135,11 @@ const MainPage = () => {
               onSearch={applyFilters}
             />
             {isVacanciesLoading ? (
-              <div className={styles.loaderContainer}>
-                <Loader size="xl" />
-              </div>
+              <Loader />
             ) : (
               <div className={styles.resultContainer}>
                 {isChangePage ? (
-                  <div className={styles.loaderContainer}>
-                    <Loader size="xl" />
-                  </div>
+                  <Loader />
                 ) : vacancies === null ? (
                   <Empty />
                 ) : (

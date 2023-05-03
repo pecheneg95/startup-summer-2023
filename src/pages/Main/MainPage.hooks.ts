@@ -1,4 +1,7 @@
 import { useEffect, useRef } from 'react';
+
+import superjobService from '../../services/superjob.service';
+
 import { Filters, UpdatedFilters } from '../../types/types';
 
 export const useFirstLoading = ({
@@ -14,6 +17,7 @@ export const useFirstLoading = ({
     if (!isInitialized.current) {
       isInitialized.current = true;
       getVacancies(filters);
+      superjobService.setIndustries();
     }
   }, [filters, getVacancies]);
 };

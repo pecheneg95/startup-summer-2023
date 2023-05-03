@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import { Loader } from '@mantine/core';
 
 import VacancyList from '../../components/VacancyList/VacancyList';
 import ChevronRightIcon from '../../components/Icons/Chevron/ChevronRightIcon';
 import ChevronLeftIcon from '../../components/Icons/Chevron/ChevronLeftIcon';
 import NotFoundPage from '../NotFound/NotFoundPage';
+import Loader from '../../components/Loader/Loader';
 
 import superjobService from '../../services/superjob.service';
 import { getLocalStorageFavorites } from '../../services/localStorageFavorites';
@@ -22,27 +22,32 @@ const FavoritePage = () => {
   const [vacancies, setVacancies] = useState<Vacancy[] | null>(null);
   const [totalPages, setTotalPages] = useState(0);
 
-  const requestFavorites = useCallback(async (page: number) => {
-    setPage(page);
-
-    const fetchVacancies = async () => {
-      setIsFavoriteLoading(true);
-      const responseFavorites = await superjobService.getFavorites({
+  const fetchVacancies = useCallback(async (page: number) => {
+    const responseFavorites: { objects: Vacancy[]; total: number } | null =
+      await superjobService.getFavorites({
         ids: favorites.current,
         page: page,
       });
-      setIsFavoriteLoading(false);
 
-      if (responseFavorites === null) {
-        return;
-      }
+    if (responseFavorites === null) {
+      setVacancies(null);
+      setTotalPages(0);
+      return;
+    }
 
-      setVacancies(responseFavorites.objects);
-      setTotalPages(calcPages(responseFavorites.total));
-    };
-
-    fetchVacancies();
+    setVacancies(responseFavorites.objects);
+    setTotalPages(calcPages(responseFavorites.total));
   }, []);
+
+  const requestFavorites = useCallback(
+    async (page: number) => {
+      setPage(page);
+      setIsFavoriteLoading(true);
+      await fetchVacancies(page);
+      setIsFavoriteLoading(false);
+    },
+    [fetchVacancies]
+  );
 
   const isInitialized = useRef(false);
 
@@ -53,17 +58,32 @@ const FavoritePage = () => {
     }
   }, [requestFavorites]);
 
+  const [isChangePage, setIsChangePage] = useState(false);
+
+  const onPageChange = useCallback(
+    async (p: { selected: number }) => {
+      setIsChangePage(true);
+      await fetchVacancies(p.selected);
+      setIsChangePage(false);
+    },
+    [fetchVacancies]
+  );
+
   return (
     <>
       {isFavoriteLoading ? (
-        <div className={styles.loaderContainer}>
-          <Loader size={'xl'} />
-        </div>
+        <Loader />
       ) : (
         <>
-          {vacancies !== null ? (
+          {vacancies === null ? (
+            <NotFoundPage />
+          ) : (
             <section className={styles.section}>
-              <VacancyList vacancies={vacancies} />
+              {isChangePage ? (
+                <Loader />
+              ) : (
+                <VacancyList vacancies={vacancies} />
+              )}
 
               {totalPages > 1 && (
                 <ReactPaginate
@@ -81,14 +101,10 @@ const FavoritePage = () => {
                   previousClassName={styles.previos}
                   nextClassName={styles.next}
                   disabledClassName={styles.inactive}
-                  onPageChange={(p) => {
-                    requestFavorites(p.selected);
-                  }}
+                  onPageChange={onPageChange}
                 />
               )}
             </section>
-          ) : (
-            <NotFoundPage />
           )}
         </>
       )}

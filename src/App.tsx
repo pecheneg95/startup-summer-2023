@@ -1,49 +1,58 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import {
+  Route,
+  Navigate,
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+} from 'react-router-dom';
 
 import Layout from './pages/Layout/Layout';
 
 import MainPage from './pages/Main/MainPage';
 import FavoritePage from './pages/Favorite/FavoritePage';
-import VacancyPage from './pages/Vacancy/VacancyPage';
+import { VacancyPage, vacancyLoader } from './pages/Vacancy/VacancyPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 
 import './App.scss';
 
-const App = () => {
-  return (
-    <Routes>
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route
+      path="/"
+      element={<Layout />}>
       <Route
-        path="/"
-        element={<Layout />}>
+        index
+        element={
+          <Navigate
+            replace
+            to="vacancies"
+          />
+        }></Route>
+
+      <Route path="vacancies">
         <Route
           index
-          element={
-            <Navigate
-              replace
-              to="/vacancies"
-            />
-          }></Route>
-
-        <Route path="/vacancies">
-          <Route
-            index
-            element={<MainPage />}></Route>
-          <Route
-            path="/vacancies/:id"
-            element={<VacancyPage />}></Route>
-        </Route>
-
+          element={<MainPage />}></Route>
         <Route
-          path="/favorite"
-          element={<FavoritePage />}></Route>
-
-        <Route
-          path="/*"
-          element={<NotFoundPage />}></Route>
+          path=":id"
+          loader={vacancyLoader}
+          element={<VacancyPage />}></Route>
       </Route>
-    </Routes>
-  );
+
+      <Route
+        path="favorite"
+        element={<FavoritePage />}></Route>
+
+      <Route
+        path="*"
+        element={<NotFoundPage />}></Route>
+    </Route>
+  )
+);
+
+const App = () => {
+  return <RouterProvider router={router} />;
 };
 
 export default React.memo(App);
