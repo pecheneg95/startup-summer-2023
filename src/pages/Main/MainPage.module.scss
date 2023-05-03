@@ -12,6 +12,7 @@
   .section {
     position: relative;
     max-width: 773px;
+    min-height: 640px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -121,7 +122,6 @@
 @media (max-width: 600px) {
   .mainPage {
     .section {
-      min-height: 640px;
       .paginateContainer {
         padding-bottom: 16px;
       }
