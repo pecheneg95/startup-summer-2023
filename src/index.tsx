@@ -2,7 +2,6 @@ import React from 'react';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
-import { MantineProvider } from '@mantine/core';
 
 import App from './App';
 
@@ -13,11 +12,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <MantineProvider theme={{ loader: 'oval' }}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </MantineProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>
 );
 

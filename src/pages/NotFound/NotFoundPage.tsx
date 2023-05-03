@@ -14,7 +14,7 @@ const NotFoundPage = () => {
         src={detective}></img>
       <h3 className={styles.header}>Упс, здесь еще ничего нет!</h3>
       <Link
-        to={`/`}
+        to={`/vacancies`}
         className={styles.btnLink}>
         <button className={styles.btn}>Поиск Вакансий</button>
       </Link>

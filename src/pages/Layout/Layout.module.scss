@@ -61,6 +61,21 @@
   display: flex;
 }
 
+.navLink {
+  text-decoration: none;
+  @include TInter(400);
+  font-size: 16px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  color: $black;
+}
+
+.navLink.active,
+.navLink:active {
+  color: $blue-500;
+}
+
 @media (max-width: 700px) {
   .header {
     height: 120px;
@@ -89,5 +104,10 @@
       justify-content: center;
       gap: 20px;
     }
+  }
+
+  .navLink {
+    font-size: 14px;
+    line-height: 18px;
   }
 }

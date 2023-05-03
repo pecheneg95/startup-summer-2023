@@ -4,7 +4,9 @@ import { NavLink, Outlet } from 'react-router-dom';
 import Logo from '../../components/Icons/Logo/Logo';
 
 import styles from './Layout.module.scss';
-import './Layout.scss';
+
+const setActive = ({ isActive }: { isActive: boolean }) =>
+  isActive ? `${styles.active} ${styles.navLink}` : `${styles.navLink}`;
 
 const Layout = () => {
   return (
@@ -16,14 +18,13 @@ const Layout = () => {
             <span className={styles.text}>Jobored</span>
           </div>
           <nav className={styles.navigation}>
-            {/* // TODO add higlits to nav link */}
             <NavLink
-              className="navLink"
-              to="/">
+              className={setActive}
+              to="/vacancies">
               Поиск Вакансий
             </NavLink>
             <NavLink
-              className="navLink"
+              className={setActive}
               to="/favorite">
               Избранное
             </NavLink>
