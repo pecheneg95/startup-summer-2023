@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useAsyncValue, useParams } from 'react-router-dom';
-import classNames from 'classnames';
+import cn from 'classnames';
 import { StarIcon } from '@mantine/core';
 
 import LocationIcon from '../../components/Icons/Location/LocationIcon';
@@ -23,15 +23,18 @@ const VacancyLayout = () => {
   const vacancy = useAsyncValue() as Vacancy | null;
   const { id } = useParams();
 
-  const [isInFavorite, setInFavorite] = useState(
+  const [isInFavorite, setIsInFavorite] = useState(
     isLocalStorageFavorite(Number(id))
   );
 
   const toggleFavorite = useCallback(() => {
-    isInFavorite
-      ? deleteLocalStorageFavorite(Number(id))
-      : setLocalStorageFavorite(Number(id));
-    setInFavorite(!isInFavorite);
+    if (isInFavorite) {
+      deleteLocalStorageFavorite(Number(id));
+    } else {
+      setLocalStorageFavorite(Number(id));
+    }
+
+    setIsInFavorite(!isInFavorite);
   }, [id, isInFavorite]);
 
   return (
@@ -54,11 +57,7 @@ const VacancyLayout = () => {
               <span className={styles.locationText}>{vacancy.town.title}</span>
             </div>
             <div
-              className={
-                !!isInFavorite
-                  ? classNames(styles.active, styles.favorite)
-                  : styles.favorite
-              }
+              className={cn(isInFavorite && styles.active, styles.favorite)}
               onClick={toggleFavorite}>
               <StarIcon
                 color="none"

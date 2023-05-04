@@ -3,9 +3,9 @@ const getLocalStorageFavorites = () => {
     return JSON.parse(localStorage.getItem('favorites') as string).map(
       (el: string) => Number(el)
     ) as number[];
-  } else {
-    return null;
   }
+
+  return null;
 };
 
 const setLocalStorageFavorite = (id: number) => {
@@ -35,9 +35,9 @@ const isLocalStorageFavorite = (id: number) => {
 
   if (favorites !== null) {
     return favorites.includes(id);
-  } else {
-    return false;
   }
+
+  return false;
 };
 
 export {

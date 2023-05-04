@@ -17,16 +17,18 @@ import { Vacancy } from '../../types/types';
 import styles from './VacancyItem.module.scss';
 
 const VacancyItem = ({ content }: { content: Vacancy }) => {
-  const [isInFavorite, setInFavorite] = useState(
+  const [isInFavorite, setIsInFavorite] = useState(
     isLocalStorageFavorite(content.id)
   );
 
   const toggleFavorite = useCallback(() => {
-    isInFavorite
-      ? deleteLocalStorageFavorite(content.id)
-      : setLocalStorageFavorite(content.id);
+    if (isInFavorite) {
+      deleteLocalStorageFavorite(content.id);
+    } else {
+      setLocalStorageFavorite(content.id);
+    }
 
-    setInFavorite(!isInFavorite);
+    setIsInFavorite(!isInFavorite);
   }, [content.id, isInFavorite]);
 
   return (

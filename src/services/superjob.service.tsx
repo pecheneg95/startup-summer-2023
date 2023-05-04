@@ -54,7 +54,8 @@ const makeRequest = async ({
     });
   } catch (err: any) {
     if (err.status === 410) {
-      setToken().then(() => makeRequest({ params, token, path }));
+      await setToken();
+      makeRequest({ params, token, path });
     } else {
       throw err;
     }
@@ -94,10 +95,11 @@ const getVacancies = async (searchParams: UpdatedFilters) => {
       params[param] = (searchParams as Record<string, string | number>)[param];
   }
 
-  if (!!searchParams.payment_from || !!searchParams.payment_to) {
+  if (searchParams.payment_from || searchParams.payment_to) {
     params['no_agreement'] = 1;
   }
 
+  console.log(params);
   const result:
     | AxiosResponse<{ objects: Vacancy[]; total: number }>
     | undefined = await makeRequest({
@@ -132,7 +134,9 @@ const getFavorites = async ({
   ids: number[] | null;
   page: number;
 }) => {
-  if (ids === null || ids.length === 0) return null;
+  if (ids === null || ids.length === 0) {
+    return null;
+  }
 
   await checkToken();
 

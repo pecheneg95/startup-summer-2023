@@ -7,7 +7,7 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 
-import Layout from './pages/Layout/Layout';
+import Layout from './components/Layout/Layout';
 
 import MainPage from './pages/Main/MainPage';
 import FavoritePage from './pages/Favorite/FavoritePage';
@@ -28,25 +28,30 @@ const router = createBrowserRouter(
             replace
             to="vacancies"
           />
-        }></Route>
+        }
+      />
 
       <Route path="vacancies">
         <Route
           index
-          element={<MainPage />}></Route>
+          element={<MainPage />}
+        />
         <Route
           path=":id"
           loader={vacancyLoader}
-          element={<VacancyPage />}></Route>
+          element={<VacancyPage />}
+        />
       </Route>
 
       <Route
         path="favorite"
-        element={<FavoritePage />}></Route>
+        element={<FavoritePage />}
+      />
 
       <Route
         path="*"
-        element={<NotFoundPage />}></Route>
+        element={<NotFoundPage />}
+      />
     </Route>
   )
 );
