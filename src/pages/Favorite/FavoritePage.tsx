@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
-import VacancyList from '../../components/VacancyList/VacancyList';
-import ChevronRightIcon from '../../components/Icons/Chevron/ChevronRightIcon';
-import ChevronLeftIcon from '../../components/Icons/Chevron/ChevronLeftIcon';
-import NotFoundPage from '../NotFound/NotFoundPage';
-import Loader from '../../components/Loader/Loader';
+import VacancyList from 'components/VacancyList/VacancyList';
+import ChevronRightIcon from 'components/Icons/Chevron/ChevronRightIcon';
+import ChevronLeftIcon from 'components/Icons/Chevron/ChevronLeftIcon';
+import NotFoundPage from 'pages/NotFound/NotFoundPage';
+import Loader from 'components/Loader/Loader';
 
-import superjobService from '../../services/superjob.service';
-import { getLocalStorageFavorites } from '../../services/localStorageFavorites';
-import calcPages from '../../helpers/calcPages';
+import superjobService from 'services/superjob.service';
+import { getLocalStorageFavorites } from 'services/localStorageFavorites';
+import calcPages from 'helpers/calcPages';
 
-import { Vacancy } from '../../types/types';
+import { Vacancy } from 'types/types';
 
 import styles from './FavoritePage.module.scss';
 

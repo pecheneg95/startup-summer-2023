@@ -7,14 +7,14 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 
-import Layout from './components/Layout/Layout';
+import Layout from 'components/Layout/Layout';
 
-import MainPage from './pages/Main/MainPage';
-import FavoritePage from './pages/Favorite/FavoritePage';
-import { VacancyPage, vacancyLoader } from './pages/Vacancy/VacancyPage';
-import NotFoundPage from './pages/NotFound/NotFoundPage';
+import MainPage from 'pages/Main/MainPage';
+import FavoritePage from 'pages/Favorite/FavoritePage';
+import { VacancyPage, vacancyLoader } from 'pages/Vacancy/VacancyPage';
+import NotFoundPage from 'pages/NotFound/NotFoundPage';
 
-import './App.scss';
+import 'App.scss';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

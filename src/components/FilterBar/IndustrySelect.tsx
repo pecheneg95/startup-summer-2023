@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { Select, TransitionProps } from '@mantine/core';
 
-import { ReactComponent as DownIcon } from './../../assets/icons/down.svg';
-import UpIcon from '../Icons/UpIcon/UpIcon';
+import { ReactComponent as DownIcon } from 'assets/icons/down.svg';
+import UpIcon from 'components/Icons/UpIcon/UpIcon';
 
-import { Industry } from '../../types/types';
+import { Industry } from 'types/types';
 
 import styles from './IndustrySelect.module.scss';
 

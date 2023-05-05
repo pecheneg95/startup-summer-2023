@@ -1,8 +1,8 @@
 import React from 'react';
 
-import styles from './Empty.module.scss';
+import detective from 'assets/images/detective.webp';
 
-import detective from './../../assets/images/detective.webp';
+import styles from './Empty.module.scss';
 
 const Empty = () => {
   return (

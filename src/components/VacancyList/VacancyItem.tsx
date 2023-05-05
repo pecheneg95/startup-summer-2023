@@ -2,17 +2,17 @@ import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
 
-import StarIcon from '../Icons/Star/StarIcon';
-import LocationIcon from '../Icons/Location/LocationIcon';
+import StarIcon from 'components/Icons/Star/StarIcon';
+import LocationIcon from 'components/Icons/Location/LocationIcon';
 
 import {
   setLocalStorageFavorite,
   deleteLocalStorageFavorite,
   isLocalStorageFavorite,
-} from '../../services/localStorageFavorites';
-import { formatSalaryText } from '../../helpers/formatSalary';
+} from 'services/localStorageFavorites';
+import { formatSalaryText } from 'helpers/formatSalary';
 
-import { Vacancy } from '../../types/types';
+import { Vacancy } from 'types/types';
 
 import styles from './VacancyItem.module.scss';
 

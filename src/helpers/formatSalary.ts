@@ -1,4 +1,4 @@
-import { Salary } from '../types/types';
+import { Salary } from 'types/types';
 
 const formatSalaryText = ({
   payment,

@@ -2,25 +2,20 @@ import React, { useEffect } from 'react';
 import { useCallback, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
-import FilterBar from './../../components/FilterBar/FilterBar';
-import SearchBar from './../../components/SearchBar/SearchBar';
-import VacancyList from './../../components/VacancyList/VacancyList';
-import Empty from '../../components/Empty/Empty';
-import ChevronRightIcon from '../../components/Icons/Chevron/ChevronRightIcon';
-import ChevronLeftIcon from '../../components/Icons/Chevron/ChevronLeftIcon';
-import Loader from '../../components/Loader/Loader';
+import FilterBar from 'components/FilterBar/FilterBar';
+import SearchBar from 'components/SearchBar/SearchBar';
+import VacancyList from 'components/VacancyList/VacancyList';
+import Empty from 'components/Empty/Empty';
+import ChevronRightIcon from 'components/Icons/Chevron/ChevronRightIcon';
+import ChevronLeftIcon from 'components/Icons/Chevron/ChevronLeftIcon';
+import Loader from 'components/Loader/Loader';
 
 import { useFirstLoading } from './MainPage.hooks';
 
-import superjobService from '../../services/superjob.service';
-import calcPages from '../../helpers/calcPages';
+import superjobService from 'services/superjob.service';
+import calcPages from 'helpers/calcPages';
 
-import {
-  Filters,
-  Industry,
-  UpdatedFilters,
-  Vacancy,
-} from './../../types/types';
+import { Filters, Industry, UpdatedFilters, Vacancy } from 'types/types';
 
 import styles from './MainPage.module.scss';
 

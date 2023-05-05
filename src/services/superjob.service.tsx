@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { Industry, AuthData, UpdatedFilters, Vacancy } from '../types/types';
+import { Industry, AuthData, UpdatedFilters, Vacancy } from 'types/types';
 
 const LOGIN = process.env.REACT_APP_LOGIN as string;
 const PASSWORD = process.env.REACT_APP_PASSWORD as string;

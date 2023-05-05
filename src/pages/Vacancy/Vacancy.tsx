@@ -3,19 +3,19 @@ import { useAsyncValue, useParams } from 'react-router-dom';
 import cn from 'classnames';
 import { StarIcon } from '@mantine/core';
 
-import LocationIcon from '../../components/Icons/Location/LocationIcon';
-import NotFoundPage from '../NotFound/NotFoundPage';
+import LocationIcon from 'components/Icons/Location/LocationIcon';
+import NotFoundPage from 'pages/NotFound/NotFoundPage';
 
 import {
   deleteLocalStorageFavorite,
   isLocalStorageFavorite,
   setLocalStorageFavorite,
-} from '../../services/localStorageFavorites';
+} from 'services/localStorageFavorites';
 
-import { formatSalaryText } from '../../helpers/formatSalary';
-import createMarkup from '../../helpers/createMarkup';
+import { formatSalaryText } from 'helpers/formatSalary';
+import createMarkup from 'helpers/createMarkup';
 
-import { Vacancy } from '../../types/types';
+import { Vacancy } from 'types/types';
 
 import styles from './VacancyPage.module.scss';
 

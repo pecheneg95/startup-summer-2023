@@ -3,9 +3,9 @@ import React, { useCallback, useState } from 'react';
 import IndustrySelect from './IndustrySelect';
 import ApplyFiltersButton from './ApplyFiltersButton';
 import Salary from './Salary';
-import CrossIcon from '../Icons/CrossIcon/CrossIcon';
+import CrossIcon from 'components/Icons/CrossIcon/CrossIcon';
 
-import { Industry, UpdatedFilters } from '../../types/types';
+import { Industry, UpdatedFilters } from 'types/types';
 
 import styles from './FilterBar.module.scss';
 

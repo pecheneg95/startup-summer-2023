@@ -1,5 +1,5 @@
-@import './../../styles/colors.scss';
-@import './../../styles/fonts.scss';
+@import 'styles/colors.scss';
+@import 'styles/fonts.scss';
 
 .mainPage {
   width: 100%;
@@ -121,6 +121,7 @@
 
 @media (max-width: 600px) {
   .mainPage {
+    padding-top: 20px;
     .section {
       .paginateContainer {
         padding-bottom: 16px;

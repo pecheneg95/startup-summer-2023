@@ -2,7 +2,7 @@ import React from 'react';
 
 import VacancyItem from './VacancyItem';
 
-import { Vacancy } from '../../types/types';
+import { Vacancy } from 'types/types';
 
 import styles from './VacancyList.module.scss';
 

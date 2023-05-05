@@ -1,5 +1,5 @@
-@import './../../styles/colors.scss';
-@import './../../styles/fonts.scss';
+@import 'styles/colors.scss';
+@import 'styles/fonts.scss';
 
 .header {
   position: relative;
@@ -78,7 +78,7 @@
 
 @media (max-width: 700px) {
   .header {
-    height: 120px;
+    height: 100px;
 
     .headerWrapper {
       justify-content: center;
@@ -95,7 +95,7 @@
 @media (max-width: 600px) {
   .header {
     .headerWrapper {
-      padding: 20px;
+      padding: 10px;
     }
 
     .navigation {
@@ -104,10 +104,5 @@
       justify-content: center;
       gap: 20px;
     }
-  }
-
-  .navLink {
-    font-size: 14px;
-    line-height: 18px;
   }
 }

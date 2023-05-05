@@ -1,4 +1,5 @@
 import { Loader as MantineLoader } from '@mantine/core';
+
 import styles from './Loader.module.scss';
 
 const Loader = () => {

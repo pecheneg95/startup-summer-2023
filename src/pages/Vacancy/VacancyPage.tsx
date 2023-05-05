@@ -7,11 +7,11 @@ import {
 } from 'react-router-dom';
 
 import VacancyLayout from './Vacancy';
-import Loader from '../../components/Loader/Loader';
+import Loader from 'components/Loader/Loader';
 
-import superjobService from '../../services/superjob.service';
+import superjobService from 'services/superjob.service';
 
-import { Vacancy } from '../../types/types';
+import { Vacancy } from 'types/types';
 
 const VacancyPage = React.memo(() => {
   const { vacancy } = useLoaderData() as { vacancy: Vacancy | null };

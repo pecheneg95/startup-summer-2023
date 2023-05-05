@@ -1,5 +1,5 @@
-@import './../../styles/colors.scss';
-@import './../../styles/fonts.scss';
+@import 'styles/colors.scss';
+@import 'styles/fonts.scss';
 
 .filter {
   width: 315px;
@@ -28,7 +28,6 @@
 
 .reset {
   cursor: pointer;
-  // width: 115px;
   height: 20px;
   margin: 0;
   padding: 0;
@@ -72,5 +71,5 @@
   stroke: $blue-500;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 600px) {
 }

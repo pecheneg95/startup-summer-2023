@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { Filters, UpdatedFilters } from '../../types/types';
+import { Filters, UpdatedFilters } from 'types/types';
 
 export const useFirstLoading = ({
   filters,

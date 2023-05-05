@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import styles from './NotFoundPage.module.scss';
+import detective from 'assets/images/detective.webp';
 
-import detective from './../../assets/images/detective.webp';
+import styles from './NotFoundPage.module.scss';
 
 const NotFoundPage = () => {
   return (

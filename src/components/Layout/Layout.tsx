@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 
-import Logo from '../Icons/Logo/Logo';
+import Logo from 'components/Icons/Logo/Logo';
 
 import styles from './Layout.module.scss';
 
