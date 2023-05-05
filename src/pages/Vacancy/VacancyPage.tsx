@@ -13,7 +13,7 @@ import superjobService from 'services/superjob.service';
 
 import { Vacancy } from 'types/types';
 
-const VacancyPage = React.memo(() => {
+const VacancyPage = () => {
   const { vacancy } = useLoaderData() as { vacancy: Vacancy | null };
 
   return (
@@ -23,15 +23,16 @@ const VacancyPage = React.memo(() => {
       </Await>
     </Suspense>
   );
-});
+};
 
-const vacancyLoader = async ({ params }: LoaderFunctionArgs) => {
+export const vacancyLoader = async ({ params }: LoaderFunctionArgs) => {
   const id = Number(params.id);
+  const vacancy = Number.isNaN(id) ? null : superjobService.getVacancy(id);
 
   return defer({
-    vacancy: superjobService.getVacancy(id),
+    vacancy: vacancy,
     id,
   });
 };
 
-export { VacancyPage, vacancyLoader };
+export default React.memo(VacancyPage);

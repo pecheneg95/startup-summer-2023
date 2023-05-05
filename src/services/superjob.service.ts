@@ -1,6 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { Industry, AuthData, UpdatedFilters, Vacancy } from 'types/types';
+import {
+  Industry,
+  AuthData,
+  UpdatedFilters,
+  Vacancy,
+  QueryParams,
+} from 'types/types';
 
 const LOGIN = process.env.REACT_APP_LOGIN as string;
 const PASSWORD = process.env.REACT_APP_PASSWORD as string;
@@ -34,28 +40,30 @@ const checkToken = async () => {
 
 const makeRequest = async ({
   params,
-  token,
   path,
 }: {
-  params?: Record<string, number | number[] | string>;
-  token?: string;
+  params?: QueryParams;
   path?: string;
 }) => {
   try {
+    await checkToken();
+
+    const token = authData?.access_token;
+
     return axios({
       method: 'get',
       baseURL: `https://${BASE_URL}/2.0/vacancies/${path || ''}`,
       headers: {
         'X-Secret-Key': X_SECRET_KEY,
         'X-Api-App-Id': CLIENT_SECRET,
-        ...(token && { Authorization: `Bearer ${token}` }),
+        Authorization: `Bearer ${token}`,
       },
       params: params,
     });
   } catch (err: any) {
     if (err.status === 410) {
       await setToken();
-      makeRequest({ params, token, path });
+      makeRequest({ params, path });
     } else {
       throw err;
     }
@@ -86,25 +94,21 @@ const setIndustries = async () => {
 };
 
 const getVacancies = async (searchParams: UpdatedFilters) => {
-  await checkToken();
-
-  const params: Record<string, string | number> = { count: 4 };
+  const params: QueryParams = { count: 4 };
 
   for (const param in searchParams) {
-    if (!!(searchParams as Record<string, string | number>)[param])
-      params[param] = (searchParams as Record<string, string | number>)[param];
+    if (!!(searchParams as QueryParams)[param])
+      params[param] = (searchParams as QueryParams)[param];
   }
 
   if (searchParams.payment_from || searchParams.payment_to) {
     params['no_agreement'] = 1;
   }
 
-  console.log(params);
   const result:
     | AxiosResponse<{ objects: Vacancy[]; total: number }>
     | undefined = await makeRequest({
     params: params,
-    token: (authData as AuthData).access_token,
   });
 
   if (result && result.data) {
@@ -113,18 +117,21 @@ const getVacancies = async (searchParams: UpdatedFilters) => {
 };
 
 const getVacancy = async (id: number) => {
-  await checkToken();
+  try {
+    await checkToken();
 
-  const result = await makeRequest({
-    token: (authData as AuthData).access_token,
-    path: String(id),
-  });
+    const result = await makeRequest({
+      path: `${id}`,
+    });
 
-  if (result && result.data) {
-    return result.data as Vacancy;
+    if (result && result.data) {
+      return result.data as Vacancy;
+    }
+
+    return null;
+  } catch (error: any) {
+    return null;
   }
-
-  return null;
 };
 
 const getFavorites = async ({
@@ -134,13 +141,13 @@ const getFavorites = async ({
   ids: number[] | null;
   page: number;
 }) => {
+  await checkToken();
+
   if (ids === null || ids.length === 0) {
     return null;
   }
 
-  await checkToken();
-
-  const params: Record<string, number[] | number> = {
+  const params: QueryParams = {
     ids: ids,
     page: page,
     count: 4,
@@ -148,12 +155,13 @@ const getFavorites = async ({
 
   const result = await makeRequest({
     params: params,
-    token: (authData as AuthData).access_token,
   });
 
-  if (result && result.data) {
+  if (result && result.data && result.data.objects.length > 0) {
     return result.data;
   }
+
+  return null;
 };
 
 const superjobService = {

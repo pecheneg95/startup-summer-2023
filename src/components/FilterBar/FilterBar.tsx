@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import IndustrySelect from './IndustrySelect';
 import ApplyFiltersButton from './ApplyFiltersButton';
 import Salary from './Salary';
-import CrossIcon from 'components/Icons/CrossIcon/CrossIcon';
+import CrossIcon from 'icons/CrossIcon/CrossIcon';
 
 import { Industry, UpdatedFilters } from 'types/types';
 
@@ -22,7 +22,7 @@ const FilterBar = ({
 }: {
   onUpdateFilters: (updatedFilters: UpdatedFilters) => void;
   onApplyFilters: () => void;
-  industries: Industry[];
+  industries: Industry[] | null;
 }) => {
   const [indusrty, setIndustry] = useState<number | null>(null);
   const [salaryFrom, setSalaryFrom] = useState(0);

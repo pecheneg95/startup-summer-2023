@@ -11,7 +11,7 @@ import Layout from 'components/Layout/Layout';
 
 import MainPage from 'pages/Main/MainPage';
 import FavoritePage from 'pages/Favorite/FavoritePage';
-import { VacancyPage, vacancyLoader } from 'pages/Vacancy/VacancyPage';
+import VacancyPage, { vacancyLoader } from 'pages/Vacancy/VacancyPage';
 import NotFoundPage from 'pages/NotFound/NotFoundPage';
 
 import 'App.scss';

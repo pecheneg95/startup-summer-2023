@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { useCallback, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import cn from 'classnames';
 
 import FilterBar from 'components/FilterBar/FilterBar';
 import SearchBar from 'components/SearchBar/SearchBar';
 import VacancyList from 'components/VacancyList/VacancyList';
 import Empty from 'components/Empty/Empty';
-import ChevronRightIcon from 'components/Icons/Chevron/ChevronRightIcon';
-import ChevronLeftIcon from 'components/Icons/Chevron/ChevronLeftIcon';
 import Loader from 'components/Loader/Loader';
+import ChevronRightIcon from 'icons/Chevron/ChevronRightIcon';
+import ChevronLeftIcon from 'icons/Chevron/ChevronLeftIcon';
+import { showError } from 'components/Toast/Toast';
 
 import { useFirstLoading } from './MainPage.hooks';
 
@@ -42,23 +44,28 @@ const MainPage = () => {
 
   const fetchVacancies = useCallback(
     async (updatedFilters: UpdatedFilters) => {
-      const filter = { ...filters, ...updatedFilters };
-      setFilters(filter);
+      try {
+        const filter = { ...filters, ...updatedFilters };
+        setFilters(filter);
 
-      const responseVacancies = await superjobService.getVacancies(filter);
+        const responseVacancies = await superjobService.getVacancies(filter);
 
-      if (
-        responseVacancies &&
-        responseVacancies.objects &&
-        responseVacancies.total
-      ) {
-        setVacancies(responseVacancies.objects);
-        setTotalPages(calcPages(responseVacancies.total));
-        return;
+        if (
+          responseVacancies &&
+          responseVacancies.objects &&
+          responseVacancies.total
+        ) {
+          setVacancies(responseVacancies.objects);
+          setTotalPages(calcPages(responseVacancies.total));
+          return;
+        }
+
+        setVacancies(null);
+        setTotalPages(0);
+      } catch (err) {
+        showError();
+        console.error(err);
       }
-
-      setVacancies(null);
-      setTotalPages(0);
     },
     [filters]
   );
@@ -68,6 +75,7 @@ const MainPage = () => {
   const getVacancies = useCallback(
     async (updatedFilters: UpdatedFilters) => {
       setIsVacanciesLoading(true);
+
       await fetchVacancies(updatedFilters);
       setIsVacanciesLoading(false);
     },
@@ -82,9 +90,18 @@ const MainPage = () => {
 
   useEffect(() => {
     const fetchIndustries = async () => {
-      setIsIndustriesLoading(true);
-      setIndustries(await superjobService.getIndustries());
-      setIsIndustriesLoading(false);
+      try {
+        setIsIndustriesLoading(true);
+
+        setIndustries(await superjobService.getIndustries());
+        setIsIndustriesLoading(false);
+      } catch (err) {
+        setIndustries(null);
+        setIsIndustriesLoading(false);
+
+        showError();
+        console.error(err);
+      }
     };
 
     fetchIndustries();
@@ -100,6 +117,7 @@ const MainPage = () => {
   const onPageChange = useCallback(
     async (p: { selected: number }) => {
       setIsChangePage(true);
+
       await fetchVacancies({ page: p.selected });
       setIsChangePage(false);
     },
@@ -116,13 +134,11 @@ const MainPage = () => {
         <Loader />
       ) : (
         <>
-          {industries && (
-            <FilterBar
-              onUpdateFilters={updateFilters}
-              onApplyFilters={applyFilters}
-              industries={industries}
-            />
-          )}
+          <FilterBar
+            onUpdateFilters={updateFilters}
+            onApplyFilters={applyFilters}
+            industries={industries}
+          />
 
           <section className={styles.section}>
             <SearchBar
@@ -146,9 +162,9 @@ const MainPage = () => {
                   <ReactPaginate
                     pageCount={totalPages}
                     pageRangeDisplayed={3}
-                    marginPagesDisplayed={0}
+                    marginPagesDisplayed={1}
                     forcePage={filters.page}
-                    breakLabel={null}
+                    breakLabel={'...'}
                     nextLabel={<ChevronRightIcon color="none" />}
                     previousLabel={<ChevronLeftIcon color="none" />}
                     containerClassName={styles.paginateContainer}
@@ -158,6 +174,7 @@ const MainPage = () => {
                     previousClassName={styles.previos}
                     nextClassName={styles.next}
                     disabledClassName={styles.inactive}
+                    breakClassName={cn(styles.btn, styles.break)}
                     onPageChange={onPageChange}
                   />
                 )}

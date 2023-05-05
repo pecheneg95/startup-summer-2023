@@ -103,22 +103,22 @@ input[type='search']::-webkit-search-results-decoration {
 
 @media (max-width: 600px) {
   .search {
-    height: 36px;
+    // height: 36px;
     padding: 0 5px;
     gap: 5px;
 
     .input {
       @include TInter(400);
-      font-size: 12px;
-      line-height: 14px;
+      font-size: 14px;
+      line-height: 16px;
     }
 
     .btn {
       cursor: pointer;
-      min-width: 50px;
+      min-width: 60px;
       min-height: 28px;
 
-      font-size: 12px;
+      font-size: 14px;
       line-height: 16px;
     }
   }

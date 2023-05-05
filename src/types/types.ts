@@ -45,4 +45,14 @@ type Salary = {
   currency?: string;
 };
 
-export type { Filters, UpdatedFilters, Industry, AuthData, Vacancy, Salary };
+type QueryParams = Record<string, string | number | number[]>;
+
+export type {
+  Filters,
+  UpdatedFilters,
+  Industry,
+  AuthData,
+  Vacancy,
+  Salary,
+  QueryParams,
+};

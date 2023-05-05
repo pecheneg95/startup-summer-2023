@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import cn from 'classnames';
 
-import VacancyList from 'components/VacancyList/VacancyList';
-import ChevronRightIcon from 'components/Icons/Chevron/ChevronRightIcon';
-import ChevronLeftIcon from 'components/Icons/Chevron/ChevronLeftIcon';
 import NotFoundPage from 'pages/NotFound/NotFoundPage';
+import VacancyList from 'components/VacancyList/VacancyList';
 import Loader from 'components/Loader/Loader';
+import { showError } from 'components/Toast/Toast';
+import ChevronRightIcon from 'icons/Chevron/ChevronRightIcon';
+import ChevronLeftIcon from 'icons/Chevron/ChevronLeftIcon';
 
 import superjobService from 'services/superjob.service';
-import { getLocalStorageFavorites } from 'services/localStorageFavorites';
+import { getFavorites } from 'services/favorites.service';
 import calcPages from 'helpers/calcPages';
 
 import { Vacancy } from 'types/types';
@@ -17,26 +19,34 @@ import styles from './FavoritePage.module.scss';
 
 const FavoritePage = () => {
   const [isFavoriteLoading, setIsFavoriteLoading] = useState(true);
-  const favorites = useRef(getLocalStorageFavorites());
+  const favorites = useRef(getFavorites());
   const [page, setPage] = useState(0);
   const [vacancies, setVacancies] = useState<Vacancy[] | null>(null);
   const [totalPages, setTotalPages] = useState(0);
 
   const fetchVacancies = useCallback(async (page: number) => {
-    const responseFavorites: { objects: Vacancy[]; total: number } | null =
-      await superjobService.getFavorites({
-        ids: favorites.current,
-        page: page,
-      });
+    try {
+      const responseFavorites: { objects: Vacancy[]; total: number } | null =
+        await superjobService.getFavorites({
+          ids: favorites.current,
+          page: page,
+        });
 
-    if (responseFavorites === null) {
+      if (responseFavorites === null) {
+        setVacancies(null);
+        setTotalPages(0);
+        return;
+      }
+
+      setVacancies(responseFavorites.objects);
+      setTotalPages(calcPages(responseFavorites.total));
+    } catch (err) {
       setVacancies(null);
       setTotalPages(0);
-      return;
-    }
 
-    setVacancies(responseFavorites.objects);
-    setTotalPages(calcPages(responseFavorites.total));
+      showError();
+      console.error(err);
+    }
   }, []);
 
   const requestFavorites = useCallback(
@@ -89,9 +99,9 @@ const FavoritePage = () => {
                 <ReactPaginate
                   pageCount={totalPages}
                   pageRangeDisplayed={3}
-                  marginPagesDisplayed={0}
+                  marginPagesDisplayed={1}
                   forcePage={page}
-                  breakLabel={null}
+                  breakLabel={'...'}
                   nextLabel={<ChevronRightIcon color="none" />}
                   previousLabel={<ChevronLeftIcon color="none" />}
                   containerClassName={styles.paginateContainer}
@@ -101,6 +111,7 @@ const FavoritePage = () => {
                   previousClassName={styles.previos}
                   nextClassName={styles.next}
                   disabledClassName={styles.inactive}
+                  breakClassName={cn(styles.btn, styles.break)}
                   onPageChange={onPageChange}
                 />
               )}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LocationIcon = ({ color }: { color: string }) => {
+const StarIcon = ({ color }: { color: string }) => {
   return (
     <svg
       width="22"
@@ -17,4 +17,4 @@ const LocationIcon = ({ color }: { color: string }) => {
   );
 };
 
-export default React.memo(LocationIcon);
+export default React.memo(StarIcon);

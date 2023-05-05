@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Select, TransitionProps } from '@mantine/core';
 
 import { ReactComponent as DownIcon } from 'assets/icons/down.svg';
-import UpIcon from 'components/Icons/UpIcon/UpIcon';
+import UpIcon from 'icons/UpIcon/UpIcon';
 
 import { Industry } from 'types/types';
 
@@ -39,8 +39,9 @@ const SELECT_STYLES = {
     borderRadius: '8px',
   },
   item: {
+    display: 'flex',
     width: '260px',
-    height: '36px',
+    minHeight: '35px',
     padding: '8px',
     fontFamily: 'Inter',
     fontStyle: 'normal' as const,
@@ -48,8 +49,8 @@ const SELECT_STYLES = {
     fontSize: '14px',
     lineHeight: '20px',
     color: '#232134',
-    textOverflow: 'ellipsis' as const,
     overflow: 'hidden' as const,
+    whiteSpace: 'pre-wrap' as const,
     '&[data-selected]': {
       backgroundColor: '#5E96FC',
       '&, &:hover': {
@@ -74,13 +75,14 @@ const IndustrySelect = ({
   industry,
   updateIndusrty,
 }: {
-  industries: Industry[];
+  industries: Industry[] | null;
   industry: number | null;
   updateIndusrty: (industry: number | null) => void;
 }) => {
-  const selectData = industries.map((el) => {
-    return el.title;
-  });
+  const selectData =
+    industries?.map((el) => {
+      return el.title;
+    }) || [];
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -91,7 +93,7 @@ const IndustrySelect = ({
   const changeIndustry = useCallback(
     (value: string | null) => {
       const newIndustry = value
-        ? (industries.find((el) => el.title === value)?.key as number | null)
+        ? (industries?.find((el) => el.title === value)?.key as number | null)
         : null;
 
       updateIndusrty(newIndustry);
@@ -110,7 +112,7 @@ const IndustrySelect = ({
         maxDropdownHeight={188}
         transitionProps={TRANSITION_PROPS}
         value={
-          !industry ? '' : industries.find((el) => el.key === industry)?.title
+          !industry ? '' : industries?.find((el) => el.key === industry)?.title
         }
         onChange={changeIndustry}
         data={selectData}

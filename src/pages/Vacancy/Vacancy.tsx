@@ -3,14 +3,14 @@ import { useAsyncValue, useParams } from 'react-router-dom';
 import cn from 'classnames';
 import { StarIcon } from '@mantine/core';
 
-import LocationIcon from 'components/Icons/Location/LocationIcon';
 import NotFoundPage from 'pages/NotFound/NotFoundPage';
+import LocationIcon from 'icons/Location/LocationIcon';
 
 import {
-  deleteLocalStorageFavorite,
-  isLocalStorageFavorite,
-  setLocalStorageFavorite,
-} from 'services/localStorageFavorites';
+  deleteFavorite,
+  isFavorite,
+  addFavorite,
+} from 'services/favorites.service';
 
 import { formatSalaryText } from 'helpers/formatSalary';
 import createMarkup from 'helpers/createMarkup';
@@ -23,15 +23,13 @@ const VacancyLayout = () => {
   const vacancy = useAsyncValue() as Vacancy | null;
   const { id } = useParams();
 
-  const [isInFavorite, setIsInFavorite] = useState(
-    isLocalStorageFavorite(Number(id))
-  );
+  const [isInFavorite, setIsInFavorite] = useState(isFavorite(Number(id)));
 
   const toggleFavorite = useCallback(() => {
     if (isInFavorite) {
-      deleteLocalStorageFavorite(Number(id));
+      deleteFavorite(Number(id));
     } else {
-      setLocalStorageFavorite(Number(id));
+      addFavorite(Number(id));
     }
 
     setIsInFavorite(!isInFavorite);
@@ -56,20 +54,18 @@ const VacancyLayout = () => {
               <LocationIcon color="#ACADB9" />
               <span className={styles.locationText}>{vacancy.town.title}</span>
             </div>
-            <div
+            <button
               className={cn(isInFavorite && styles.active, styles.favorite)}
+              data-elem={`vacancy-${vacancy.id}-shortlist-button`}
               onClick={toggleFavorite}>
-              <StarIcon
-                color="none"
-                data-elem={`vacancy-${vacancy.id}-shortlist-button`}
-              />
-            </div>
+              <StarIcon color="none" />
+            </button>
           </div>
 
           <div className={styles.descriptionContainer}>
             <div
               className={styles.richText}
-              dangerouslySetInnerHTML={createMarkup(vacancy)}
+              dangerouslySetInnerHTML={{ __html: createMarkup(vacancy) }}
             />
           </div>
         </section>

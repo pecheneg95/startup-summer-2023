@@ -1,9 +1,10 @@
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 
-import Logo from 'components/Icons/Logo/Logo';
+import Logo from 'icons/Logo/Logo';
 
 import styles from './Layout.module.scss';
+import { Toast } from 'components/Toast/Toast';
 
 const setActive = ({ isActive }: { isActive: boolean }) =>
   isActive ? `${styles.active} ${styles.navLink}` : `${styles.navLink}`;
@@ -13,10 +14,12 @@ const Layout = () => {
     <>
       <header className={styles.header}>
         <div className={styles.headerWrapper}>
-          <div className={styles.logo}>
+          <Link
+            to="/vacancies"
+            className={styles.logo}>
             <Logo color={'#5E96FC'} />
             <span className={styles.text}>Jobored</span>
-          </div>
+          </Link>
           <nav className={styles.navigation}>
             <NavLink
               className={setActive}
@@ -37,6 +40,7 @@ const Layout = () => {
           <Outlet />
         </div>
       </main>
+      <Toast />
     </>
   );
 };

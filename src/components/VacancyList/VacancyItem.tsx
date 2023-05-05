@@ -2,14 +2,14 @@ import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
 
-import StarIcon from 'components/Icons/Star/StarIcon';
-import LocationIcon from 'components/Icons/Location/LocationIcon';
+import StarIcon from 'icons/Star/StarIcon';
+import LocationIcon from 'icons/Location/LocationIcon';
 
 import {
-  setLocalStorageFavorite,
-  deleteLocalStorageFavorite,
-  isLocalStorageFavorite,
-} from 'services/localStorageFavorites';
+  addFavorite,
+  deleteFavorite,
+  isFavorite,
+} from 'services/favorites.service';
 import { formatSalaryText } from 'helpers/formatSalary';
 
 import { Vacancy } from 'types/types';
@@ -17,15 +17,13 @@ import { Vacancy } from 'types/types';
 import styles from './VacancyItem.module.scss';
 
 const VacancyItem = ({ content }: { content: Vacancy }) => {
-  const [isInFavorite, setIsInFavorite] = useState(
-    isLocalStorageFavorite(content.id)
-  );
+  const [isInFavorite, setIsInFavorite] = useState(isFavorite(content.id));
 
   const toggleFavorite = useCallback(() => {
     if (isInFavorite) {
-      deleteLocalStorageFavorite(content.id);
+      deleteFavorite(content.id);
     } else {
-      setLocalStorageFavorite(content.id);
+      addFavorite(content.id);
     }
 
     setIsInFavorite(!isInFavorite);
@@ -49,14 +47,12 @@ const VacancyItem = ({ content }: { content: Vacancy }) => {
         <LocationIcon color="#ACADB9" />
         <span className={styles.locationText}>{content.town.title}</span>
       </div>
-      <div
+      <button
         className={cn(isInFavorite && styles.active, styles.favorite)}
+        data-elem={`vacancy-${content.id}-shortlist-button`}
         onClick={toggleFavorite}>
-        <StarIcon
-          color="none"
-          data-elem={`vacancy-${content.id}-shortlist-button`}
-        />
-      </div>
+        <StarIcon color="none" />
+      </button>
     </li>
   );
 };
